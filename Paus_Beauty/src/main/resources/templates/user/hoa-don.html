@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Paus Beauty - Hóa Đơn</title>
+	<link th:insert="~{user/link/link.html}">
+</head>
+
+<body ng-app="app" ng-controller="giohang-ctrl">
+
+	<span th:insert="~{user/common/header.html}"></span>
+
+	<center>
+		<div class="signup-container">
+			<h2>PAUS BEAUTY CẢM ƠN QUÝ KHÁCH</h2>
+			<br>
+			<h4 style="font-size: 20px; color: black;">Mã đơn hàng của quý khách là:</h4>
+			
+			<form id="signupForm">
+				<input type="text" name="tenTaiKhoan" style="text-align: center; font-size: 30px;" th:value="${maDH}" required
+					disabled>
+				<br>
+				<a th:href="@{/}">Trang chủ</a>
+			</form>
+		</div>
+	</center>
+
+	<span th:insert="~{user/common/footer.html}"></span>
+	<!-- AngularJS -->
+	<script th:src="@{/user/angularjs/giohang.js}"></script>
+	<!-- link -->
+	<div th:insert="~{user/link/scriptIndex.html}"></div>
+
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-image: url('https://img6.thuthuatphanmem.vn/uploads/2022/03/03/background-my-pham-hien-dai_094504423.jpg');
+			background-size: cover;
+			display: flex;
+			flex-direction: column;
+			height: 100vh;
+			margin: 0;
+		}
+
+		.signup-container {
+			width: 450px;
+			padding: 30px;
+			background: #fff;
+			border-radius: 8px;
+			box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+			text-align: center;
+			margin: 50px 0px;
+		}
+
+		.signup-container h2 {
+			margin-bottom: 20px;
+			font-size: 20px;
+			color: #333;
+		}
+
+		.signup-container a {
+			color: #007BFF;
+			text-decoration: none;
+		}
+
+		.signup-container a:hover {
+			text-decoration: underline;
+		}
+
+		.signup-container input[type="text"] {
+			width: 100%;
+			padding: 10px;
+			margin: 10px 0;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+		}
+
+		.signup-container input[type="submit"] {
+			width: 100%;
+			padding: 10px;
+			margin: 20px 0;
+			background-color: #FF3B30;
+			border: none;
+			border-radius: 4px;
+			color: #fff;
+			font-size: 16px;
+			cursor: pointer;
+		}
+
+		.signup-container input[type="submit"]:hover {
+			background-color: #cc3226;
+		}
+
+		.signup-container a {
+			font-size: 18px;
+		}
+
+		.error {
+			color: red;
+			font-size: 14px;
+			margin-top: 10px;
+		}
+	</style>
+
+</body>
+
+</html>

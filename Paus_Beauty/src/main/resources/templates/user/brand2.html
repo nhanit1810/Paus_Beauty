@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Paus Beauty - Thương Hiệu</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link th:insert="~{user/link/link.html}">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+.custom-brand-title {
+	font-family: 'Georgia', 'Times New Roman', serif;
+	font-size: 36px;
+	font-weight: bold;
+	color: #000000;
+	text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+	margin-top: 50px;
+	text-transform: uppercase;
+	letter-spacing: 1.5px;
+}
+
+.brand-name {
+	font-family: 'Arial', sans-serif;
+	font-size: 18px;
+	font-weight: 600;
+	color: #333;
+	text-align: center;
+	margin-top: 10px;
+}
+
+.brand-image {
+	height: auto;
+	max-width: 300px;
+	border: 2px solid #ddd;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.brand-image:hover {
+	transform: scale(1.05);
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.product-item {
+	margin-bottom: 35px;
+}
+
+.block2 {
+	border: 1px solid #e6e6e6;
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.block2:hover {
+	transform: scale(1.02);
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.block2-pic img {
+	width: 100%;
+	border-bottom: 1px solid #e6e6e6;
+}
+
+.block2-txt {
+	padding: 14px;
+}
+
+.block2-txt a {
+	font-size: 16px;
+	color: #333;
+	text-decoration: none;
+	transition: color 0.2s;
+}
+
+.block2-txt a:hover {
+	color: #000;
+}
+
+.block2-txt span {
+	font-size: 14px;
+	color: #999;
+}
+
+.load-more-btn {
+	background-color: #6c757d;
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 5px;
+	transition: background-color 0.2s;
+}
+
+.load-more-btn:hover {
+	background-color: #5a6268;
+}
+</style>
+</head>
+<body class="animsition" ng-app="app" ng-controller="sanpham-index">
+	<!-- Header -->
+	<span th:insert="~{user/common/header.html}"></span>
+
+	<!-- Content page -->
+	<div class="container mt-5">
+		<h3 class="text-center custom-brand-title">THƯƠNG HIỆU</h3>
+		<div class="text-center">
+			<img
+				th:src="@{/assets/images/thuonghieu/{image}(image=${thuongHieu.anhTH})}"
+				alt="Ảnh Thương hiệu" class="brand-image mb-4">
+			<h4 class="brand-name" th:text="${thuongHieu.tenTH}"></h4>
+		</div>
+
+		<div class="row" id="product-list">
+			<div th:each="sanPham : ${sanPhams}"
+				class="col-sm-6 col-md-4 col-lg-3 product-item">
+				<div class="block2">
+					<div class="block2-pic hov-img0">
+						<img
+							th:src="@{/assets/images/sanpham/{sanPham.anh}(sanPham.anh=${sanPham.anh})}"
+							alt="IMG-PRODUCT">
+					</div>
+					<div class="block2-txt flex-w flex-t p-t-14">
+						<div class="block2-txt-child1 flex-col-l">
+							<a th:href="@{'/chitietsanpham?maSP=' + ${sanPham.maSP}}"
+								th:text="${sanPham.tenSP}"
+								class="stext-105 cl3 hov-cl1 trans-04"></a> 
+								
+								<span th:text="${sanPham.gia} + ' VNĐ'" class="formatted-price" style="color: red; font-weight: bold; margin-left: 10px;"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Back to top -->
+	<div class="btn-back-to-top" id="myBtn">
+		<span class="symbol-btn-back-to-top"> <i
+			class="zmdi zmdi-chevron-up"></i>
+		</span>
+	</div>
+	
+	<!-- Footer -->
+	<div th:insert="~{user/common/footer.html}"></div>
+
+	<!-- product-detail -->
+	<div th:insert="~{user/product-detail.html}"></div>
+
+	<!-- AngularJS -->
+	<script th:src="@{/user/angularjs/sanpham.js}"></script>
+
+	<!-- link -->
+	<div th:insert="~{user/link/scriptIndex.html}"></div>
+
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script>
+	function formatCurrency(amount) {
+	    return new Intl.NumberFormat('vi-VN', {
+	        style: 'currency',
+	        currency: 'VND'
+	    }).format(amount).replace('₫', 'VNĐ');   
+
+	}
+
+	document.addEventListener("DOMContentLoaded", function() {
+	    const priceElements = document.querySelectorAll('.formatted-price');
+	    priceElements.forEach(function(priceElement) {
+	        const price = parseFloat(priceElement.textContent);
+	        priceElement.textContent = formatCurrency(price);
+	    });
+	});
+	</script>
+</body>
+</html>

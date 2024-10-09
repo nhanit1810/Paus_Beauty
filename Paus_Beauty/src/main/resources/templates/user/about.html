@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Paus Beauty - Giới Thiệu</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link th:insert="~{user/link/link.html}">
+<style>
+.container-menu-desktop, .header-v4 {
+	margin-bottom: 0;
+}
+
+.wrap-menu-desktop {
+	margin-bottom: 0;
+}
+
+.bg0 {
+	padding-top: 0;
+}
+
+footer {
+	margin-top: 0;
+}
+
+.p-t-75 {
+	padding-top: 0 !important;
+}
+
+.p-b-120 {
+	padding-bottom: 0 !important;
+}
+
+.stext-113, .stext-115, .stext-114 {
+    font-size: 22px; 
+    line-height: 1.6;
+}
+</style>
+</head>
+<body class="animsition">
+	<!-- Header -->
+	<span th:insert="~{user/common/header.html}"></span>
+
+	<!-- Content page -->
+	<section class="bg0 p-t-75 p-b-120">
+		<div class="container">
+			<div class="row p-b-148">
+				<div class="col-md-7 col-lg-8">
+					<div class="p-t-7 p-r-85 p-r-15-lg p-r-0-md">
+						<h3 class="mtext-111 cl2 p-b-16">Về Paus Beauty</h3>
+						<p class="stext-113 cl6 p-b-26">Chào mừng bạn đến với Paus
+							Beauty, nơi chúng tôi mang đến sự hoàn hảo cho làn da của bạn.</p>
+
+						<h3 class="mtext-111 cl2 p-b-16">Sứ mệnh của chúng tôi</h3>
+						<p class="stext-113 cl6 p-b-26">Tại Paus Beauty, chúng tôi tin
+							rằng làn da là vẻ đẹp tự nhiên của mỗi người. Sứ mệnh của chúng
+							tôi là cung cấp những sản phẩm mỹ phẩm chất lượng cao, được chọn
+							lọc kỹ lưỡng từ các thương hiệu uy tín trên khắp thế giới. Chúng
+							tôi cam kết đem đến cho khách hàng những trải nghiệm mua sắm thú
+							vị và sự hài lòng tuyệt đối.</p>
+					</div>
+				</div>
+
+				<div class="col-11 col-md-5 col-lg-4 m-lr-auto">
+					<div class="how-bor1 ">
+						<div class="hov-img0">
+							<img th:src="@{/user/images/about-02.jpg}" alt="IMG">
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="order-md-2 col-md-7 col-lg-8 p-b-30">
+					<div class="p-t-7 p-l-85 p-l-15-lg p-l-0-md">
+						<h3 class="mtext-111 cl2 p-b-16">Đội ngũ của chúng tôi</h3>
+						<p class="stext-115 cl6 p-b-26">Đội ngũ tại Paus Beauty là
+							những người đam mê về làm đẹp và luôn sẵn sàng tư vấn cho bạn về
+							cách chăm sóc da hiệu quả nhất. Chúng tôi luôn nỗ lực để mang đến
+							cho bạn những thông tin và sản phẩm mới nhất trong ngành mỹ phẩm.</p>
+
+						<h3 class="mtext-111 cl2 p-b-16">Cam kết của chúng tôi</h3>
+						<p class="stext-113 cl6 p-b-26">Chúng tôi cam kết chỉ bán
+							những sản phẩm đã được kiểm định chất lượng và an toàn. Với mỗi
+							sản phẩm Paus Beauty, bạn có thể hoàn toàn yên tâm về nguồn gốc
+							và chất lượng.</p>
+
+						<div class="bor16 p-l-29 p-b-9 m-t-22">
+							<p class="stext-114 cl6 p-r-40 p-b-11">Hãy cùng Paus Beauty
+								khám phá và chăm sóc làn da của bạn một cách tinh tế nhất!</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="order-md-1 col-11 col-md-5 col-lg-4 m-lr-auto p-b-30">
+					<div class="how-bor2">
+						<div class="hov-img0">
+							<img th:src="@{/user/images/about-01.jpg}" alt="IMG">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Back to top -->
+	<div class="btn-back-to-top" id="myBtn">
+		<span class="symbol-btn-back-to-top"> <i
+			class="zmdi zmdi-chevron-up"></i>
+		</span>
+	</div>
+
+	<!-- Footer -->
+	<div th:insert="~{user/common/footer.html}"></div>
+
+	<!-- product-detail -->
+	<div th:insert="~{user/product-detail.html}"></div>
+
+	<!-- AngularJS -->
+	<script th:src="@{/user/angularjs/sanpham.js}"></script>
+
+	<!-- link -->
+	<div th:insert="~{user/link/scriptIndex.html}"></div>
+
+</body>
+</html>

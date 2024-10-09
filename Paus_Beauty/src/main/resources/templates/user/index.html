@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Paus Beauty - Trang Chủ</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link th:insert="~{user/link/link.html}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" th:href="@{/user/css/index.css}">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<style>
+		a:hover {
+			text-decoration: none;
+		}
+
+		p:hover {
+			color: pink;
+		}
+
+		.pagination li.active a {
+			background-color: #17a2b8;
+			color: white;
+		}
+
+		.pagination li a {
+			color: #17a2b8;
+		}
+
+		.pagination li a:hover {
+			background-color: #e9ecef;
+		}
+
+		.product-name {
+			font-size: 1.1rem;
+			font-weight: bold;
+			color: #333;
+			margin-bottom: 5px;
+		}
+
+		.product-price {
+			text-align: center;
+			display: block;
+			font-size: 1rem;
+			font-weight: bold;
+			color: #e74c3c;
+		}
+	</style>
+</head>
+
+<body ng-app="app" ng-controller="sanpham-index" class="animsition">
+
+	<!-- Header -->
+	<span th:insert="~{user/common/header.html}"></span>
+
+	<!-- Slider -->
+	<section class="section-slide">
+		<div class="wrap-slick1">
+			<div class="slick1">
+				<div class="item-slick1" style="background-image: url(user/images/slide1.jpg);"></div>
+				<div class="item-slick1" style="background-image: url(user/images/slide2.jpg);"></div>
+				<div class="item-slick1" style="background-image: url(user/images/slide3.jpg);"></div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Product -->
+	<section class="bg0 p-t-23 p-b-140">
+		<div class="container">
+			<div class="flex-w flex-sb-m p-b-52">
+
+				<div class="flex-w flex-c-m m-tb-10">
+					<div class="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-tb-4 js-show-search">
+						<i class="icon-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-search"></i>
+						<i class="icon-close-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
+						Tìm kiếm
+					</div>
+				</div>
+
+				<!-- Search product -->
+				<div class="dis-none panel-search w-full p-t-10 p-b-15">
+					<div class="bor8 dis-flex p-l-15">
+						<form action="/search" method="get">
+							<input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="keyword"
+								placeholder="Search">
+						</form>
+					</div>
+				</div>
+			</div>
+			<h1 class="heading">XU HƯỚNG LÀM ĐẸP</h1>
+
+			<div class="categories">
+				<a href="#" class="category-link">Trang điểm</a>
+			</div>
+
+			<div class="products">
+				<div class="product-card" ng-repeat="item in sanpham">
+					<div class="product-image">
+						<img ng-src="/assets/images/sanpham/{{item.anh}}" alt="Product Image">
+						<div class="quick-view" ng-click="openQuickView(item)">Xem
+							nhanh</div>
+					</div>
+					<div class="product-info">
+						<h2>{{item.thuongHieu.tenTH}}</h2>
+						<a class="product-name" ng-href="/chitietsanpham?maSP={{item.maSP}}">
+							<p>{{getFirstFiveWords(item.tenSP)}}</p>
+						</a>
+						<div class="price">{{item.gia | currency:'':0}} VNĐ</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="view-all-container">
+				<a class="view-all" href="/product">Xem tất cả</a>
+			</div>
+			<br>
+			<h1 class="heading">TOP 5 SẢN PHẨM BÁN CHẠY</h1>
+
+			<div class="products">
+				<div class="product-card" ng-repeat="item in sanphambanchay">
+					<div class="product-image">
+						<img ng-src="/assets/images/sanpham/{{item.anh}}" alt="Product Image">
+						<div class="quick-view" ng-click="openQuickView(item)">Xem
+							nhanh</div>
+					</div>
+					<div class="product-info">
+						<h2>{{item.thuongHieu.tenTH}}</h2>
+						<a class="product-name" ng-href="/chitietsanpham?maSP={{item.maSP}}">
+							<p>{{getFirstFiveWords(item.tenSP)}}</p>
+						</a>
+						<div class="price">{{item.gia | currency:'':0}} VNĐ</div>
+					</div>
+				</div>
+			</div>
+
+			<br>
+			<h1 class="heading">Thương Hiệu</h1>
+
+			<div class="products">
+				<div class="product-card" ng-repeat="item in thuonghieu">
+					<div class="product-image">
+						<a th:href="@{/brand2/{{item.maTH}}}"> <img ng-src="/assets/images/thuonghieu/{{item.anhTH}}"
+								alt="Product Image">
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<br>
+			<h1 class="heading">CHĂM SÓC CƠ THỂ</h1>
+			<div class="products">
+				<div class="product-card" ng-repeat="item in sanpham2">
+					<div class="product-image">
+						<img ng-src="/assets/images/sanpham/{{item.anh}}" alt="Product Image">
+						<div class="quick-view" ng-click="openQuickView(item)">Xem
+							nhanh</div>
+					</div>
+					<div class="product-info">
+						<h2>{{item.thuongHieu.tenTH}}</h2>
+						<a class="product-name" ng-href="/chitietsanpham?maSP={{item.maSP}}">
+							<p>{{getFirstFiveWords(item.tenSP)}}</p>
+						</a>
+						<div class="price">{{item.gia | currency:'':0}} VNĐ</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="view-all-container">
+				<a class="view-all" href="/category/3">Xem tất cả</a>
+			</div>
+
+
+
+			<div class="row" id="product-list">
+				<div ng-repeat="item in pager.items" class="col-sm-6 col-md-4 col-lg-3 p-b-35">
+					<div class="block2">
+						<div class="block2-pic hov-img0">
+							<img ng-src="/assets/images/sanpham/{{item.anh}}" alt="IMG-PRODUCT"> <a href=""
+								ng-click="edit(item)"
+								class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
+								Xem </a>
+						</div>
+						<div class="block2-txt flex-w flex-t p-t-14">
+							<div class="block2-txt-child1 flex-col-l">
+								<a class="product-name" ng-href="/chitietsanpham?maSP={{item.maSP}}">{{item.tenSP}}
+								</a> <span class="text-danger product-price">{{item.gia |
+									currency:'':0}} VNĐ </span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</section>
+
+	<div class="modal fade" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true" style="padding-top: 100px;">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="row">
+							<!-- Hình ảnh sản phẩm -->
+							<div class="col-md-6 d-flex align-items-center">
+								<div id="product-carousel" class="carousel slide" data-ride="carousel">
+									<div class="carousel-inner">
+										<div class="carousel-item active">
+											<img ng-src="/assets/images/sanpham/{{form.anh}}" alt="Hình ảnh sản phẩm"
+												class="img-fluid rounded shadow-sm">
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- Thông tin sản phẩm -->
+							<div class="col-md-6 product-details">
+								<h4 style=" color: #5a6268; font-weight: bold;">{{form.tenSP}}</h4>
+								<p style="color: #fc9c9d; font-weight: bold; ">Giá: {{form.gia | currency:'' :0}} VNĐ
+								</p>
+								<div class="d-flex align-items-center justify-content-between mb-4">
+									<p class="text-muted mb-0">Còn lại: {{form.tonKho}}</p>
+								</div>
+
+								<div class="modal-top">
+									<div class="modal-top-item">
+										<img th:src="@{/user/images/anh4.png}" width="60px" ;
+											height="60px" "Thanh toán khi nhận hàng">
+										<p>Thanh toán khi nhận hàng</p>
+									</div>
+									<div class="modal-top-item">
+										<img th:src="@{/user/images/anh3.png}" width="60px" ; height="60px"
+											alt="Giao nhanh miễn phí 2H">
+										<p>Giao nhanh miễn phí 2H</p>
+									</div>
+									<div class="modal-top-item">
+										<img th:src="@{/user/images/anh2.png}" width="60px" ; height="60px"
+											alt="30 ngày đổi trả miễn phí">
+										<p>30 ngày đổi trả miễn phí</p>
+									</div>
+									<div class="modal-top-item">
+										<img th:src="@{/user/images/anh1.png}" width="60px" ; height="60px"
+											alt="Thương hiệu uy tín toàn cầu">
+										<p>Thương hiệu uy tín toàn cầu</p>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer justify-content-between">
+					<a style="background-color: #fc9c9d;" href="/chitietsanpham?maSP={{form.maSP}}"
+						class="btn btn-danger">Chi tiết sản phẩm</a>
+					<button th:if="${session.tentaikhoan != null}" ng-click="themGH(form)" class="btn btn-danger"
+						style="background-color: #fc9c9d;">Thêm vào giỏ hàng</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<!-- Back to top -->
+	<div class="btn-back-to-top" id="myBtn">
+		<span class="symbol-btn-back-to-top"><i class="zmdi zmdi-chevron-up"></i></span>
+	</div>
+
+	<!-- Footer -->
+	<div th:insert="~{user/common/footer.html}"></div>
+
+	<!-- product-detail -->
+	<div th:insert="~{user/product-detail.html}"></div>
+
+	<!-- AngularJS -->
+	<script th:src="@{/user/angularjs/sanpham.js}"></script>
+
+	<!-- link -->
+	<div th:insert="~{user/link/scriptIndex.html}"></div>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Paus Beauty - Chính Sách</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link th:insert="~{user/link/link.html}">
+<style>
+.container-menu-desktop, .header-v4 {
+	margin-bottom: 0;
+}
+
+.wrap-menu-desktop {
+	margin-bottom: 0;
+}
+
+.bg0 {
+	padding-top: 0;
+}
+
+footer {
+	margin-top: 0;
+}
+
+.p-t-75 {
+	padding-top: 0 !important;
+}
+
+.p-b-120 {
+	padding-bottom: 0 !important;
+}
+.content-topbar {
+	font-size: 16px;
+}
+
+.mtext-111 {
+	font-size: 24px;
+}
+
+.stext-113 {
+	font-size: 18px;
+}
+
+.header-cart-item-info {
+	font-size: 18px;
+}
+
+.mtext-103 {
+	font-size: 24px;
+}
+</style>
+</head>
+<body class="animsition">
+
+	<!-- Header -->
+	<span th:insert="~{user/common/header.html}" style="margin-bottom: 20px;"></span>
+
+	<!-- Content page -->
+	<section class="bg0 p-t-75 p-b-120">
+		<div class="container">
+			<div class="row p-b-148">
+				<div class="col-md-7 col-lg-8">
+					<div class="p-t-7 p-r-85 p-r-15-lg p-r-0-md">
+						<h3 class="mtext-111 cl2 p-b-16">Chính Sách Đổi Trả</h3>
+						<h3 class="mtext-111 cl2 p-b-16">Quy định đổi, trả và hoàn
+							lại tiền hàng</h3>
+						<p class="stext-113 cl6 p-b-26">Nhằm đảm bảo quyền lợi người
+							tiêu dùng, nâng cao chất lượng dịch vụ sau bán hàng. Shop Linh
+							Lan hỗ trợ Quý khách có thể đổi, trả và hoàn lại tiền hàng với
+							các điều kiện sau:</p>
+						<ul class="stext-113 cl6 p-b-26">
+							<li>1. Trường hợp đổi /trả và hoàn tiền cho Quý khách:</li>
+							<li>- Sản phẩm không đúng chủng loại, mẫu mã như quý khách
+								đặt hàng.</li>
+							<li>- Sản phẩm không đủ số lượng, không đủ bộ như trong đơn
+								hàng.</li>
+							<li>- Sản phẩm không đạt chất lượng như: quá hạn sử dụng,
+								kém phẩm chất, hàng nhái, hàng giả …</li>
+							<li>- Sản phẩm bị bể vỡ xảy ra trong quá trình vận chuyển …</li>
+						</ul>
+						<ul class="stext-113 cl6 p-b-26">
+							<li>2. Điều kiện đổi /trả và hoàn tiền cho Quý khách:</li>
+							<li>- Sản phẩm được đổi trong vòng 24h kể từ khi giao - nhận
+								hàng.</li>
+							<li>- Sản phẩm phải còn nguyên tem niêm phong của shop Paus
+								Beauty và nhãn mác của nhà sản xuất.</li>
+							<li>- Sản phẩm nhận lại bao bì phải còn nguyên vẹn, chưa sử
+								dụng và còn đầy đủ các phụ kiện kèm theo, quà khuyến mãi (nếu
+								có)…</li>
+							<li>- Sản phẩm nhận lại không bị lỗi hình thức (trầy xước,
+								móp méo, vỡ, vết bẩn …).</li>
+							<li>- Sản phẩm khi nhận lại phải có đầy đủ các chứng từ kèm
+								theo như (chứng từ mua hàng, hóa đơn VAT …).</li>
+						</ul>
+						<p class="stext-113 cl6 p-b-26">***Quý khách vui lòng kiểm tra
+							hàng hóa và ký nhận tình trạng sản phẩm với Nhân viên giao hàng
+							ngay khi nhận được hàng. Khi phát hiện một trong các trường hợp
+							nêu trên, quý khách có thể trao đổi trực tiếp với Nhân viên giao
+							hàng hoặc phản hồi cho Paus Beauty trong vòng 24h.</p>
+						<p class="stext-113 cl6 p-b-26">Paus Beauty rất mong và luôn
+							đón nhận những ý kiến đóng góp của Quý khách để Paus Beauty ngày
+							càng phát triển hoàn thiện hơn.</p>
+						<p class="stext-113 cl6 p-b-26">Xin chân thành cảm ơn!</p>
+					</div>
+				</div>
+
+				<div class="col-11 col-md-5 col-lg-4 m-lr-auto">
+					<div class="how-bor1">
+						<div class="hov-img0">
+							<img th:src="@{/user/images/about-02.jpg}" alt="IMG">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Back to top -->
+	<div class="btn-back-to-top" id="myBtn">
+		<span class="symbol-btn-back-to-top"><i
+			class="zmdi zmdi-chevron-up"></i></span>
+	</div>
+
+	<!-- Footer -->
+	<div th:insert="~{user/common/footer.html}"></div>
+
+	<!-- product-detail -->
+	<div th:insert="~{user/product-detail.html}"></div>
+
+	<!-- AngularJS -->
+	<script th:src="@{/user/angularjs/sanpham.js}"></script>
+
+	<!-- link -->
+	<div th:insert="~{user/link/scriptIndex.html}"></div>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

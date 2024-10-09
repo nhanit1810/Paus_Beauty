@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Quản trị Admin</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Main CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/admin/doc/css/main.css}">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+<!-- or -->
+<link rel="stylesheet"
+	href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+<!-- Font-icon css-->
+<link rel="stylesheet" type="text/css"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/admin/css/index.css}">	
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		<link rel="shortcut icon" th:href="@{/assets/images/logo.png}" type="image/x-icon">
+</head>
+
+<body onload="time()" class="app sidebar-mini rtl" ng-app="app"
+	ng-controller="baocao-ctrl">
+
+	<div th:insert="~{admin/menu.html}"></div>
+
+	<main class="app-content">
+		<div class="app-title">
+			<ul class="app-breadcrumb breadcrumb side">
+				<li class="breadcrumb-item active"><a href="#"><b>Bảng điều khiển</b></a></li>
+			</ul>
+			<div id="clock"></div>
+		</div>
+		<div class="row">
+			<!--Left-->
+			<div class="col-md-12 col-lg-6">
+				<div class="row">
+					<!-- col-6 -->
+					<div class="col-md-6">
+						<div class="widget-small primary coloured-icon">
+							<i class='icon bx bxs-user-account fa-3x'></i>
+							<div class="info">
+								<h4>Tổng tài khoản</h4>
+								<p>
+									<b th:text="${account_count}"></b> <b>Tài khoản</b>
+								</p>
+								<p class="info-tong">Tổng số tài khoản được quản lý.</p>
+							</div>
+						</div>
+					</div>
+					<!-- col-6 -->
+					<div class="col-md-6">
+						<div class="widget-small info coloured-icon">
+							<i class='icon bx bxs-data fa-3x'></i>
+							<div class="info">
+								<h4>Tổng sản phẩm</h4>
+								<p>
+									<b th:text="${product_count}"></b> <b>Sản phẩm</b>
+								</p>
+								<p class="info-tong">Tổng số sản phẩm được quản lý.</p>
+							</div>
+						</div>
+					</div>
+					<!-- col-6 -->
+					<div class="col-md-6">
+						<div class="widget-small warning coloured-icon">
+							<i class='icon bx bxs-shopping-bags fa-3x'></i>
+							<div class="info">
+								<h4>Tổng đơn hàng</h4>
+								<p>
+									<b th:text="${order_count}"></b> <b>Đơn hàng</b>
+								</p>
+								<p class="info-tong">Tổng số hóa đơn bán hàng trong tháng.</p>
+							</div>
+						</div>
+					</div>
+					<!-- col-6 -->
+					<div class="col-md-6">
+						<div class="widget-small danger coloured-icon">
+							<i class='icon bx bxs-error-alt fa-3x'></i>
+							<div class="info">
+								<h4>Sắp hết hàng</h4>
+								<p>
+									<b th:text="${tonkho_count}"></b> <b>Sản phẩm</b>
+								</p>
+								<p class="info-tong">Số sản phẩm cảnh báo hết cần nhập thêm.</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="widget-small danger coloured-icon">
+							<i class='icon fa-3x bx bxs-tag-x'></i>
+							<div class="info">
+								<h4>Hết hàng</h4>
+								<p>
+									<b th:text="${spHetHang_count}"></b> <b>Sản phẩm</b>
+								</p>
+								<p class="info-tong">Số sản phẩm đã hết cần nhập thêm.</p>
+							</div>
+						</div>
+					</div>
+					
+					<!-- col-12 -->
+					<div class="col-md-12">
+						<div class="tile">
+							<h3 class="tile-title">SẢN PHẨM ĐÃ HẾT</h3>
+							<div>
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>Tên sản phẩm</th>
+											<th>Ảnh</th>
+											<th>Giá tiền</th>
+											<th>Trạng thái</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="item in items">
+											<td>{{ getFirstFiveWords(item.tenSP) }}</td>
+											<td><img ng-src="/assets/images/sanpham/{{item.anh}}"
+												alt="" width="100px;"></td>
+											<td>{{item.gia | currency:'':0}} VND</td>
+											<td><span class="badge bg-danger">Hết hàng</span></td>
+
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<br>
+										<!-- col-12 -->
+					<div class="col-md-12">
+						<div class="tile">
+							<h3 class="tile-title">SẢN PHẨM SẮP HẾT HÀNG</h3>
+							<div>
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th>Tên sản phẩm</th>
+											<th>Ảnh</th>
+											<th>Giá tiền</th>
+											<th>Số lượng</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="item in nsp_saphet">
+											<td>{{ getFirstFiveWords(item.tenSP) }}</td>
+											<td><img ng-src="/assets/images/sanpham/{{item.anh}}"
+												alt="" width="100px;"></td>
+											<td>{{item.gia | currency:'':0}} VND</td>
+											<td><span class="badge bg-danger">{{item.tonKho}}</span></td>
+
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--END left-->
+			<!--Right-->
+			<div class="col-md-12 col-lg-6">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="tile">
+							<h3 class="tile-title">Biểu đồ tổng sản phẩm theo danh mục</h3>
+							<canvas id="myPieChart" width="400" height="400"></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	
+
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.1/js/select2.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.bootstrap4.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/rowgroup/1.0.4/js/dataTables.rowGroup.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/perfect-scrollbar@1.4.0/dist/perfect-scrollbar.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+	<script th:src="@{/admin/doc/js/main.js}"></script>
+	<script th:src="@{/admin/doc/js/index.js}"></script>
+	<script th:src="@{/admin/doc/js/plugins/pace.min.js}"></script>
+	<script th:src="@{/admin/doc/js/plugins/sweetalert.min.js}"></script>
+	<script th:src="@{/admin/doc/js/plugins/select2.min.js}"></script>
+	<script th:src="@{/admin/doc/js/plugins/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/admin/doc/js/plugins/dataTables.bootstrap4.min.js}"></script>
+	<script th:src="@{/admin/doc/js/plugins/responsive.bootstrap4.min.js}"></script>
+	<script th:src="@{/admin/doc/js/plugins/dataTables.buttons.min.js}"></script>
+	<script th:src="@{/admin/doc/js/plugins/buttons.bootstrap4.min.js}"></script>
+	<script th:src="@{/admin/doc/js/plugins/buttons.html5.min.js}"></script>
+	<script th:src="@{/admin/doc/js/plugins/buttons.print.min.js}"></script>
+	<script th:src="@{/admin/doc/js/plugins/buttons.colVis.min.js}"></script>
+	<script th:src="@{/admin/doc/js/plugins/dataTables.rowGroup.min.js}"></script>
+	<script th:src="@{/admin/doc/js/plugins/dataTables.select.min.js}"></script>
+	<script th:src="@{/admin/doc/js/plugins/dataTables.fixedHeader.min.js}"></script>
+	<script th:src="@{/admin/doc/js/plugins/perfect-scrollbar.min.js}"></script>
+	<script th:src="@{/admin/doc/js/plugins/bootstrap-datepicker.min.js}"></script>
+	<script th:src="@{/admin/doc/js/plugins/toastr.min.js}"></script>
+	<script th:src="@{/admin/doc/js/plugins/jquery-confirm.min.js}"></script>
+	<script th:src="@{/admin/doc/js/plugins/sweetalert.min.js}"></script>
+	<script th:src="@{/admin/js/baocao.js}"></script>
+</body>
+</html>

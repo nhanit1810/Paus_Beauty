@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Danh sách danh mục | Quản trị Admin</title>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Main CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/admin/doc/css/main.css}">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+<!-- or -->
+<link rel="stylesheet"
+	href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+<!-- Font-icon css-->
+<link rel="stylesheet" type="text/css"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- SweetAlert CSS -->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<!-- SweetAlert JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<link rel="shortcut icon" th:href="@{/assets/images/logo.png}" type="image/x-icon">
+
+<link rel="stylesheet" type="text/css"
+	th:href="@{/admin/css/dmsanpham.css}">
+
+</head>
+
+<body ng-app="app" ng-controller="danhmuc-ctrl" onload="time()"
+	class="app sidebar-mini rtl">
+
+	<div th:insert="~{admin/menu.html}"></div>
+
+	<main class="app-content">
+		<div class="app-title">
+			<ul class="app-breadcrumb breadcrumb side">
+				<li class="breadcrumb-item active"><a href="#"><b>Danh
+							sách loại sản phẩm</b></a></li>
+			</ul>
+			<div id="clock"></div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="tile">
+					<div class="tile-body">
+						<div class="row element-button mb-3">
+							<div class="col-sm-6 col-md-2 mb-2">
+								<a class="btn btn-add btn-sm btn-primary w-100"
+									data-toggle="modal" data-target="#addBrandModal" title="Thêm"><i
+									class="fas fa-plus"></i> Thêm thương hiệu</a>
+							</div>
+							<div class="col-sm-6 col-md-2 mb-2">
+								<a class="btn btn-add btn-sm btn-primary w-100"
+									data-toggle="modal" data-target="#addProductCategoryModal"
+									title="Thêm"><i class="fas fa-plus"></i> Thêm loại sản phẩm</a>
+							</div>
+							<div class="col-sm-6 col-md-2 mb-2">
+								<a class="btn btn-add btn-sm btn-primary w-100"
+									data-toggle="modal" data-target="#addDanhMucModal" title="Thêm"><i
+									class="fas fa-plus"></i> Thêm danh mục</a>
+							</div>
+							<div class="col-sm-2">
+								<a class="btn btn-delete btn-sm nhap-tu-file" type="button"
+									title="Nhập"
+									onclick="document.getElementById('fileInput').click()"><i
+									class="fas fa-file-upload"></i> Tải từ file</a> <input
+									id="fileInput" type="file" style="display: none"
+									onchange="angular.element(this).scope().importLoaiSP(this.files)">
+							</div>
+						</div>
+						<h2 class="table-title">Danh sách thương hiệu</h2>
+						<table class="table table-hover table-bordered" id="sampleTable">
+							<thead>
+								<tr>
+									<th class="col-anhTH">Ảnh</th>
+									<th class="col-tenloaisp">Tên thương hiệu</th>
+									<th class="col-chucnang">Chức năng</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="item in pagers.bras">
+									<td><img ng-src="/assets/images/thuonghieu/{{item.anhTH}}"
+										style="width: 100px; height: auto;" /></td>
+									<td>{{item.tenTH}}</td>
+									<td>
+										<button ng-click="deleteTH(item)"
+											class="btn btn-danger btn-sm trash" type="button" title="Xóa">
+											<i class="fas fa-trash-alt"></i>
+										</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<!-- Pagination for Brands -->
+						<nav aria-label="Page navigation">
+							<ul class="pagination justify-content-center">
+								<li class="page-item">
+									<button ng-click="pagers.first()" class="page-link">First</button>
+								</li>
+								<li class="page-item">
+									<button ng-click="pagers.prev()" class="page-link">Previous</button>
+								</li>
+								<li class="page-item"><span style="color: black;"
+									class="page-link">{{pagers.page + 1}} of
+										{{pagers.count}}</span></li>
+								<li class="page-item">
+									<button ng-click="pagers.next()" class="page-link">Next</button>
+								</li>
+								<li class="page-item">
+									<button ng-click="pagers.last()" class="page-link">Last</button>
+								</li>
+							</ul>
+						</nav>	
+						<hr class="element-button mb-3">
+						<h2 class="table-title">Danh sách loại sản phẩm</h2>
+						<table class="table table-hover table-bordered" id="sampleTable">
+							<thead>
+								<tr>
+									<th class="col-danhmuc">Danh mục</th>
+									<th class="col-tenloaisp">Tên loại sản phẩm</th>
+									<th class="col-chucnang">Chức năng</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="item in pager.cates">
+									<td>{{item.danhMucLoaiSanPham.tenLSP}}</td>
+									<td>{{item.tenPL}}</td>
+									<td>
+										<button ng-click="deleteLSP(item)"
+											class="btn btn-danger btn-sm trash" type="button" title="Xóa">
+											<i class="fas fa-trash-alt"></i>
+										</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<nav aria-label="Page navigation">
+							<ul class="pagination justify-content-center">
+								<li class="page-item">
+									<button ng-click="pager.first()" class="page-link">First</button>
+								</li>
+								<li class="page-item">
+									<button ng-click="pager.prev()" class="page-link">Previous</button>
+								</li>
+								<li class="page-item"><span style="color: black;"
+									class="page-link">{{pager.page + 1}} of {{pager.count}}</span></li>
+								<li class="page-item">
+									<button ng-click="pager.next()" class="page-link">Next</button>
+								</li>
+								<li class="page-item">
+									<button ng-click="pager.last()" class="page-link">Last</button>
+								</li>
+							</ul>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+
+<!-- Add Product Category Modal -->
+<div class="modal fade" id="addProductCategoryModal" tabindex="-1"
+    role="dialog" aria-labelledby="addProductCategoryModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- Thêm form name và ng-submit cho việc validate -->
+            <form name="productCategoryForm" ng-submit="createLoaiSP()" novalidate>
+                <div class="modal-header">
+                    <h5 style="color: black" class="modal-title" id="addProductCategoryModalLabel">Thêm
+                        loại sản phẩm</h5>
+                </div>
+                <div class="modal-body">
+                    <!-- Danh Mục Sản Phẩm -->
+                    <div class="form-group">
+                        <label for="categorySelect">Danh Mục Sản Phẩm</label>
+                        <select class="form-control" id="categorySelect"
+                            ng-model="form.danhMucLoaiSanPham.maLSP"
+                            ng-change="loadProductTypes(form.maLSP)"
+                            required>
+                            <option value disabled selected>Chọn danh mục sản phẩm</option>
+                            <option ng-repeat="d in dmucsp" ng-value="d.maLSP">{{d.tenLSP}}</option>
+                        </select>
+                        <!-- Hiển thị lỗi khi không chọn danh mục sản phẩm -->
+                        <span ng-show="productCategoryForm.categorySelect.$touched && productCategoryForm.categorySelect.$error.required" class="text-danger">Vui lòng chọn danh mục sản phẩm!</span>
+                    </div>
+                    <!-- Tên loại sản phẩm -->
+                    <div class="form-group">
+                        <label for="productCategoryName">Tên loại sản phẩm</label>
+                        <input type="text" class="form-control" id="productCategoryName"
+                            ng-model="form.tenPL" name="productCategoryName" required>
+                        <!-- Hiển thị lỗi khi tên loại sản phẩm rỗng -->
+                        <span ng-show="productCategoryForm.productCategoryName.$touched && productCategoryForm.productCategoryName.$error.required" class="text-danger">Tên loại sản phẩm không được để trống!</span>
+                    </div>
+                    <!-- Nút lưu lại với ng-disabled khi form không hợp lệ -->
+                    <button ng-click="createLoaiSP()" class="btn btn-save" type="button" ng-disabled="productCategoryForm.$invalid">Lưu lại</button>
+                    <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Add Brand Modal -->
+<div class="modal fade" id="addBrandModal" tabindex="-1" role="dialog" aria-labelledby="addBrandModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- Add name attribute for form validation -->
+            <form name="brandForm" ng-submit="createTH()" novalidate>
+                <div class="modal-header">
+                    <h4 style="color: black" class="modal-title" id="addBrandModalLabel">Thêm thương hiệu</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- Brand Name Field -->
+                    <div class="form-group">
+                        <label class="control-label">Nhập tên thương hiệu mới</label>
+                        <input class="form-control" ng-model="form.tenTH" type="text" name="tenTH" required>
+                        <!-- Display error when the brand name is empty -->
+                        <span ng-show="brandForm.tenTH.$touched && brandForm.tenTH.$error.required" class="text-danger">Tên thương hiệu không được để trống!</span>
+                    </div>
+
+                    <!-- Image Upload Field -->
+                    <div class="form-group">
+                        <label class="control-label">Ảnh sản phẩm</label>
+                        <div style="margin-bottom: 10px;">
+                            <!-- Preview selected image -->
+                            <div class="image-preview-container" ng-show="!imageURL">
+                                <img class="image-preview border border-5">
+                            </div>
+                            <div class="image-preview-container" ng-show="imageURL">
+                                <img ng-src="{{imageURL}}" class="image-preview border border-5">
+                            </div>
+                        </div>
+                        <div>
+                            <!-- Input for selecting image -->
+                            <div class="input-file-container">
+                                <input type="file" id="anhTH" class="form-control w-50 input-file" name="anhTH" ng-model="form.anhTH"
+                                    onchange="angular.element(this).scope().imageChanged(this.files)" required>
+                                <!-- Display error when no image is selected -->
+                                <span ng-show="brandForm.anhTH.$touched && brandForm.anhTH.$error.required" class="text-danger">Vui lòng chọn ảnh sản phẩm!</span>
+                                <label for="anhTH" class="input-file-trigger"><i class="fas fa-upload"></i> Chọn ảnh</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Save Button with ng-disabled when the form is invalid or no image is selected -->
+                    <button class="btn btn-save" type="button" ng-click="createTH()" ng-disabled="brandForm.$invalid || !form.anhTH">Lưu</button>
+                    <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addDanhMucModal" tabindex="-1"
+    role="dialog" aria-labelledby="addDanhMucModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- Thêm form name và ng-submit cho việc validate -->
+            <form name="danhMucForm" ng-submit="createDanhMuc()" novalidate>
+                <div class="modal-header">
+                    <h5 style="color: black" class="modal-title" id="addDanhMucModalLabel">Thêm
+                        danh mục sản phẩm</h5>
+                </div>
+                <div class="modal-body">
+                    <!-- Tên loại sản phẩm -->
+                    <div class="form-group">
+                        <label for="danhMucName">Tên danh mục sản phẩm</label>
+                        <input type="text" class="form-control" id="danhMucName"
+                            ng-model="form.tenLSP" name="danhMucName" required>
+                    </div>
+                    <!-- Nút lưu lại với ng-disabled khi form không hợp lệ -->
+                    <button ng-click="createDanhMuc()" class="btn btn-save" type="button" ng-disabled="danhMucForm.$invalid">Lưu lại</button>
+                    <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+	<!-- Essential javascripts for application to work-->
+	<script th:src="@{/admin/doc/js/jquery-3.2.1.min.js}"></script>
+	<script th:src="@{/admin/doc/js/popper.min.js}"></script>
+	<script th:src="@{/admin/doc/js/bootstrap.min.js}"></script>
+	<script
+		src="/ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="/src/jquery.table2excel.js"></script>
+	<script th:src="@{/admin/doc/js/main.js}"></script>
+	<!-- The javascript plugin to display page loading on top -->
+	<script th:src="@{/admin/doc/js/plugins/pace.min.js}"></script>
+	<!-- Page specific javascripts -->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+	<!-- Data table plugin-->
+	<script type="text/javascript"
+		th:src="@{/admin/docjs//plugins/jquery.dataTables.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/admin/doc/js/plugins/dataTables.bootstrap.min.js}"></script>
+
+	<script type="text/javascript">
+		//Thời Gian
+		function time() {
+			var today = new Date();
+			var weekday = new Array(7);
+			weekday[0] = "Chủ Nhật";
+			weekday[1] = "Thứ Hai";
+			weekday[2] = "Thứ Ba";
+			weekday[3] = "Thứ Tư";
+			weekday[4] = "Thứ Năm";
+			weekday[5] = "Thứ Sáu";
+			weekday[6] = "Thứ Bảy";
+			var day = weekday[today.getDay()];
+			var dd = today.getDate();
+			var mm = today.getMonth() + 1;
+			var yyyy = today.getFullYear();
+			var h = today.getHours();
+			var m = today.getMinutes();
+			var s = today.getSeconds();
+			m = checkTime(m);
+			s = checkTime(s);
+			nowTime = h + " giờ " + m + " phút " + s + " giây";
+			if (dd < 10) {
+				dd = '0' + dd
+			}
+			if (mm < 10) {
+				mm = '0' + mm
+			}
+			today = day + ', ' + dd + '/' + mm + '/' + yyyy;
+			tmp = '<span class="date"> ' + today + ' - ' + nowTime + '</span>';
+			document.getElementById("clock").innerHTML = tmp;
+			clocktime = setTimeout("time()", "1000", "Javascript");
+
+			function checkTime(i) {
+				if (i < 10) {
+					i = "0" + i;
+				}
+				return i;
+			}
+		}
+	</script>
+	<script th:src="@{/admin/js/danhmuc.js}"></script>
+</body>
+
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Paus Beauty - Sản Phẩm</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link th:insert="~{user/link/link.html}">
+</head>
+<body ng-app="app" ng-controller="sanpham-index">
+	<!-- Header -->
+	<span th:insert="~{user/common/header.html}"></span>
+
+	<main class="container mt-4">
+		<div class="row">
+			<!-- Sidebar: Danh mục và Khoảng giá -->
+			<aside class="col-lg-3 mb-4">
+				<!-- Danh mục Card -->
+				<div class="card mb-4">
+					<div class="card-header" style="background-color:#fc9c9d;font-ưeight:bold;	">Danh mục</div>
+					<ul class="list-group list-group-flush">
+						<th:block th:each="category : ${categories}">
+							<li class="list-group-item"><a
+								th:href="@{/category/{maLSP}(maLSP=${category.maLSP})}"
+								class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"
+								th:text="${category.tenLSP}"></a></li>
+						</th:block>
+					</ul>
+				</div>
+
+				<!-- Khoảng giá Card -->
+				<div class="card mb-4">
+					<div class="card-header" style="background-color:#fc9c9d;font-ưeight:bold;">Khoảng giá</div>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item"><a
+							th:href="@{/product?price=under500}"
+							class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"> Dưới
+								500.000đ </a></li>
+						<li class="list-group-item"><a
+							th:href="@{/product?price=between500-1000}"
+							class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"> Từ
+								500.000đ đến 1.000.000đ </a></li>
+						<li class="list-group-item"><a
+							th:href="@{/product?price=over1000}"
+							class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"> Trên
+								1.000.000đ </a></li>
+					</ul>
+				</div>
+			</aside>
+
+			<!-- Main Content: Tất cả sản phẩm -->
+			<section class="col-lg-9">
+				<div class="d-flex justify-content-between align-items-center mb-3">
+					<h2 class="h4">Tất cả sản phẩm</h2>
+					
+				</div>
+
+				<!-- Product List -->
+				<div class="row" id="product-list">
+					<th:block th:if="${sanphamPage.hasContent()}">
+						<div class="col-md-4 mb-4" th:each="item : ${sanphamPage.content}">
+							<div class="card h-100 product-card">
+								<img th:src="@{/assets/images/sanpham/{anh}(anh=${item.anh})}"
+									class="card-img-top" alt="Hình ảnh sản phẩm">
+								<div class="card-body text-center">
+									<h5 class="card-title">
+										<a th:href="@{/chitietsanpham(maSP=${item.maSP})}"
+											class="product-name" th:text="${item.tenSP}"></a>
+									</h5>
+									<p class="text-danger font-weight-bold">
+										<span class="formatted-price" th:text="${item.gia}" style="color: #fc9c9d"></span>
+									<span style="color: #fc9c9d" >VND</span>
+									</p>
+								</div>
+							</div>
+						</div>
+					</th:block>
+					<th:block th:if="${!sanphamPage.hasContent()}">
+						<p>Không có sản phẩm nào.</p>
+					</th:block>
+				</div>
+
+				<!-- Pagination or Load More Button -->
+				<div class="flex-c-m flex-w w-full p-t-45">
+					<!-- Add Pagination or Load More button here if needed -->
+				</div>
+			</section>
+		</div>
+	</main>
+
+
+
+	<!-- Quick View Modal -->
+	<div class="modal fade" id="quickViewModal" tabindex="-1"
+		aria-labelledby="quickViewModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title font-weight-bold text-uppercase"
+						id="quickViewModalLabel">Quick View</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-6">
+								<img ng-src="/assets/images/sanpham/{{form.anh}}"
+									alt="Product Image" class="img-fluid rounded shadow-sm">
+							</div>
+							<div
+								class="col-md-6 product-details d-flex flex-column justify-content-center">
+								<h4 class="text-primary font-weight-bold mb-3">{{form.tenSP}}</h4>
+								<p class="price text-danger font-weight-bold mb-4">Giá:
+									{{form.gia | currency:'':0}} VNĐ</p>
+								<!-- Add more product details here if needed -->
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer justify-content-between">
+					<a href="/chitietsanpham?maSP={{form.maSP}}" class="btn btn-danger">Chi
+						tiết sản phẩm</a>
+					<button type="button" class="btn btn-danger">Thêm vào giỏ
+						hàng</button>
+					<button type="button" class="btn btn-secondary btn-lg"
+						data-dismiss="modal">Đóng</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Back to top -->
+	<div class="btn-back-to-top" id="myBtn">
+		<span class="symbol-btn-back-to-top"> <i
+			class="zmdi zmdi-chevron-up"></i>
+		</span>
+	</div>
+
+	<!-- Footer -->
+	<div style="margin-top: 20px;" th:insert="~{user/common/footer.html}"></div>
+
+	<!-- product-detail -->
+	<div th:insert="~{user/product-detail.html}"></div>
+
+	<!-- AngularJS -->
+	<script th:src="@{/user/angularjs/sanpham.js}"></script>
+
+	<!-- link -->
+	<div th:insert="~{user/link/scriptIndex.html}"></div>
+
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script th:src="@{/user/angularjs/sanpham.js}"></script>
+
+	<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Fetch and display products when the page loads
+        fetchProducts();
+
+        // Add event listener to the sort select
+        document.getElementById('sortSelect').addEventListener('change', function() {
+            fetchProducts(this.value);
+        });
+    });
+
+    function fetchProducts(sortOption = 'newest') {
+        // Fetch products from the server
+        fetch('/product') // URL should point to your API endpoint
+            .then(response => response.json())
+            .then(data => {
+                // Sort products based on the selected option
+                if (sortOption === 'price_asc') {
+                    data.sort((a, b) => a.gia - b.gia);
+                } else if (sortOption === 'price_desc') {
+                    data.sort((a, b) => b.gia - a.gia);
+                } else if (sortOption === 'newest') {
+                    data.sort((a, b) => new Date(b.createDate) - new Date(a.createDate));
+                }
+                displayProducts(data);
+            })
+            .catch(error => {
+                console.error('Error fetching products:', error);
+            });
+    }
+
+    function displayProducts(products) {
+        const productList = document.getElementById('product-list');
+        productList.innerHTML = ''; // Clear current content
+
+        if (products.length === 0) {
+            productList.innerHTML = '<p>Không có sản phẩm nào.</p>';
+        } else {
+            products.forEach(item => {
+                productList.innerHTML += `
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 product-card">
+                            <img src="/assets/images/sanpham/${item.anh}" class="card-img-top" alt="${item.tenSP}">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">${item.tenSP}</h5>
+                                <p class="text-danger font-weight-bold">${formatCurrency(item.gia)}</p>
+                            </div>
+                            <div class="hover-text" onclick="openQuickView(${item.id})" data-toggle="modal" data-target="#quickViewModal">Xem nhanh</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+    }
+
+
+    function openQuickView(productId) {
+        // Fetch and display product details in the modal
+        fetch(`/api/sanpham/${productId}`)
+            .then(response => response.json())
+            .then(product => {
+                document.querySelector('#quickViewModal .modal-title').textContent = product.tenSP;
+                document.querySelector('#quickViewModal .modal-body img').src = `/assets/images/sanpham/${product.anh}`;
+                document.querySelector('#quickViewModal .modal-body .price').textContent = `${product.gia} VNĐ`;
+            })
+            .catch(error => {
+                console.error('Error fetching product details:', error);
+            });
+    }
+    
+    function formatCurrency(amount) {
+        return new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VNĐ'
+        }).format(amount);
+    }
+</script>
+
+	<script th:inline="javascript">
+		$(document).ready(function () {
+			// Lặp qua tất cả các phần tử có class là "formatted-price"
+			$(".formatted-price").each(function () {
+				// Lấy nội dung hiện tại của phần tử
+				var price = $(this).text();
+				// Định dạng giá thành dạng có dấu chấm
+				var formattedPrice = parseFloat(price).toLocaleString("vi-VN");
+				// Đặt lại nội dung của phần tử với giá đã được định dạng
+				$(this).text(formattedPrice);
+			});
+		});
+	</script>
+
+	<style>
+/* CSS Custom Styles */
+.product-card {
+	transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover {
+	transform: scale(1.05);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-name {
+	color: #333;
+	transition: color 0.2s;
+}
+
+.product-name:hover {
+	color: #ff6b6b;
+}
+
+.card-header {
+	background-color: #ff4081;
+	font-weight: bold;
+	text-transform: uppercase;
+	color: #fffdfe;
+	text-transform: uppercase;
+}
+
+.list-group-item {
+	border: none;
+}
+
+.stext-106 {
+	font-size: 20px;
+	font-weight: 400;
+}
+
+.flex-c-m {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.flex-w {
+	flex-wrap: wrap;
+}
+
+.p-t-45 {
+	padding-top: 45px;
+}
+</style>
+</body>
+</html>

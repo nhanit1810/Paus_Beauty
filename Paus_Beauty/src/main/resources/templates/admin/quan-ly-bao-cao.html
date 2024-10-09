@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Báo cáo | Quản trị Admin</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Main CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/admin/doc/css/main.css}">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+<!-- or -->
+<link rel="stylesheet"
+	href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+<!-- Font-icon css-->
+<link rel="stylesheet" type="text/css"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/admin/css/baocao.css}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+	<link rel="shortcut icon" th:href="@{/assets/images/logo.png}" type="image/x-icon">
+</head>
+
+<body onload="time()" class="app sidebar-mini rtl" ng-app="app"
+	ng-controller="baocao-ctrl">
+	<div th:insert="~{admin/menu.html}"></div>
+	<main class="app-content">
+		<div class="app-title">
+			<ul class="app-breadcrumb breadcrumb side">
+				<li class="breadcrumb-item active"><a href="#"><b>Báo
+							cáo thống kê</b></a></li>
+			</ul>
+			<div id="clock"></div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 col-lg-3">
+				<div class="widget-small info coloured-icon">
+					<i class='icon bx bxs-purchase-tag-alt fa-3x'></i>
+					<div class="info">
+						<h4>Tổng sản phẩm</h4>
+						<p>
+							<b th:text="${product_count}"></b> <b>Sản Phẩm</b>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-lg-3">
+				<div class="widget-small warning coloured-icon">
+					<i class='icon fa-3x bx bxs-shopping-bag-alt'></i>
+					<div class="info">
+						<h4>Tổng đơn hàng</h4>
+						<p>
+							<b th:text="${order_count}"></b>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-lg-3">
+				<div class="widget-small danger coloured-icon">
+					<i class='icon fa-3x bx bxs-receipt'></i>
+					<div class="info">
+						<h4>Đơn hàng hủy</h4>
+						<p>
+							<b th:text="${order_countHuyDon}"></b> <b> Đơn hàng</b>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-lg-3">
+				<div class="widget-small primary coloured-icon">
+					<i class='icon fa-3x bx bxs-chart'></i>
+					<div class="info">
+						<h4>Tổng doanh thu</h4>
+						<p>
+							<b th:text="${order_countTongDT}"></b> <b> VND</b>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="tile">
+					<div>
+						<h3 class="tile-title">TOP 5 SẢN PHẨM BÁN CHẠY</h3>
+					</div>
+					<div class="tile-body">
+						<table class="table table-hover table-bordered" id="sampleTable">
+							<thead>
+								<tr>
+									<th>Mã sản phẩm</th>
+									<th>Ảnh</th>
+									<th>Tên sản phẩm</th>
+									<th>Giá tiền</th>
+									<th>Danh mục</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="sp : ${top5SanPham}">
+									<td th:text="${sp.maSP}"></td>
+									<td><img
+										th:src="@{/assets/images/sanpham/{anh}(anh=${sp.anh})}"
+										style="width: 100px; height: auto;" /></td>
+									<td th:text="${sp.tenSP}"></td>
+									<td th:text="${sp.gia}" class="gia"></td>
+									<td th:text="${sp.loaiSanPham.tenPL}"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<button ng-click="XuatDTTheoThang()" class="btn btn-success">Xuất
+					Excel</button>
+				<div class="tile">
+					<h3 class="tile-title">DOANH THU HÀNG THÁNG</h3>
+
+					<div>
+						<canvas id="revenueChart" width="400" height="200"></canvas>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<button ng-click="XuatDTTheoQuy()" class="btn btn-success">Xuất
+					Excel</button>
+				<div class="tile">
+					<h3 class="tile-title">THỐNG KÊ DOANH THU THEO QUÝ</h3>
+					<div>
+						<canvas id="quarterlyRevenueChart" width="400" height="200"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="text-right" style="font-size: 12px">
+			<p>
+				<b>Hệ thống quản lý | Code by Paus Beauty </b>
+			</p>
+		</div>
+	</main>
+	<!-- Essential javascripts for application to work-->
+	<script th:src="@{/admin/doc/js/jquery-3.2.1.min.js}"></script>
+	<script th:src="@{/admin/doc/js/popper.min.js}"></script>
+	<script th:src="@{/admin/doc/js/bootstrap.min.js}"></script>
+	<script th:src="@{/admin/doc/js/main.js}"></script>
+	<!-- The javascript plugin to display page loading on top-->
+	<script src="js/plugins/pace.min.js"></script>
+	<!-- Page specific javascripts-->
+
+	<script th:src="@{/admin/doc/js/scriptbaocao.js}"></script>
+	<script th:src="@{/admin/js/baocao.js}"></script>
+</body>
+
+</html>

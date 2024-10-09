@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Thêm sản phẩm | Quản trị Admin</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Main CSS-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/admin/doc/css/main.css}">
+<!-- Font-icon css-->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+<!-- or -->
+<link rel="stylesheet"
+	href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<link rel="stylesheet" type="text/css"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script type="text/javascript" th:src="@{/admin/ckeditor/ckeditor.js}"></script>
+<script src="http://code.jquery.com/jquery.min.js"
+	type="text/javascript"></script>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/admin/css/sanpham.css}">
+<!-- SweetAlert CSS -->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<!-- SweetAlert JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<link rel="shortcut icon" th:href="@{/assets/images/logo.png}" type="image/x-icon">
+</head>
+
+<body onload="time()" class="app sidebar-mini rtl" ng-app="app"
+	ng-controller="sanpham-ctrl" ng-init="initializeEditPage()">
+	<div th:insert="~{admin/menu.html}"></div>
+	<main class="app-content">
+		<div class="app-title">
+			<ul class="app-breadcrumb breadcrumb">
+				<li class="breadcrumb-item">Danh sách sản phẩm</li>
+				<li class="breadcrumb-item"><a th:href="@{/sanpham}">Thêm
+						sản phẩm</a></li>
+			</ul>
+			<div id="clock"></div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="tile">
+					<h3 class="tile-title">Tạo mới sản phẩm</h3>
+					<div class="tile-body">
+						<form class="row" name="productForm" novalidate>
+							<div class="form-group col-md-3">
+								<label class="control-label">Mã sản phẩm </label> <input
+									class="form-control" ng-model="form.maSP" type="number"
+									name="maSP" required> <span class="text-danger"
+									ng-show="productForm.maSP.$dirty && productForm.maSP.$error.required"></span>
+							</div>
+
+							<div class="form-group col-md-3">
+								<label class="control-label">Tên sản phẩm</label> <input
+									class="form-control" ng-model="form.tenSP" type="text"
+									name="tenSP" required> <span class="text-danger"
+									ng-show="productForm.tenSP.$dirty && productForm.tenSP.$error.required"></span>
+							</div>
+
+							<div class="form-group col-md-3">
+								<label class="control-label">Số lượng</label> <input
+									class="form-control" ng-model="form.tonKho" type="number"
+									name="tonKho" min="0" required> <span
+									class="text-danger"
+									ng-show="productForm.tonKho.$dirty && productForm.tonKho.$error.required">Số
+									lượng là bắt buộc.</span> <span class="text-danger"
+									ng-show="productForm.tonKho.$error.min">Số lượng phải
+									lớn hơn hoặc bằng 0.</span>
+							</div>
+
+							<div class="form-group col-md-3">
+								<label for="exampleSelect1" class="control-label">Tình
+									trạng</label> <select class="form-control" ng-model="form.trangThai"
+									id="exampleSelect1" name="trangThai" required>
+									<option value="">-- Chọn tình trạng --</option>
+									<option ng-value="true">Còn hàng</option>
+									<option ng-value="false">Hết hàng</option>
+								</select> <span class="text-danger"
+									ng-show="productForm.trangThai.$dirty && productForm.trangThai.$error.required"></span>
+							</div>
+
+							<div class="form-group col-md-3">
+								<label for="exampleSelect1" class="control-label">Danh
+									Mục Sản Phẩm</label> <select class="form-control" ng-model="form.maLSP"
+									ng-change="loadProductTypes(form.maLSP)" name="maLSP" required>
+									<option value disabled selected>Chọn danh mục sản phẩm</option>
+									<option ng-repeat="d in dmucsp" ng-value="d.maLSP">{{d.tenLSP}}</option>
+								</select> <span class="text-danger"
+									ng-show="productForm.maLSP.$dirty && productForm.maLSP.$error.required"></span>
+							</div>
+
+							<div class="form-group col-md-3">
+								<label for="exampleSelect1" class="control-label">Loại
+									Sản Phẩm</label> <select class="form-control"
+									ng-model="form.loaiSanPham.maPL" ng-disabled="!form.maLSP"
+									name="loaiSanPham" required>
+									<option value disabled selected>Chọn loại sản phẩm</option>
+									<option ng-repeat="c in cates" ng-value="c.maPL">{{c.tenPL}}</option>
+								</select> <span class="text-danger"
+									ng-show="productForm.loaiSanPham.$dirty && productForm.loaiSanPham.$error.required"></span>
+							</div>
+
+							<div class="form-group col-md-3">
+								<label for="exampleSelect1" class="control-label">Thương
+									hiệu</label> <select class="form-control"
+									ng-model="form.thuongHieu.maTH" name="thuongHieu" required>
+									<option value disabled selected>Chọn thương hiệu</option>
+									<option ng-repeat="b in bras" ng-value="b.maTH">{{b.tenTH}}</option>
+								</select> <span class="text-danger"
+									ng-show="productForm.thuongHieu.$dirty && productForm.thuongHieu.$error.required"></span>
+							</div>
+
+							<div class="form-group col-md-3">
+								<label class="control-label">Giá bán</label> <input
+									class="form-control" ng-model="form.gia" type="text" name="gia"
+									required ng-pattern="/^\d+(\.\d{1,2})?$/" /> <span
+									class="text-danger"
+									ng-show="productForm.gia.$dirty && productForm.gia.$error.required">Giá
+									bán là bắt buộc.</span> <span class="text-danger"
+									ng-show="productForm.gia.$error.pattern">Giá bán không
+									hợp lệ. Vui lòng nhập số.</span>
+							</div>
+
+							<div class="form-group col-md-3">
+								<label class="control-label">Ngày</label> <input
+									class="form-control" ng-model="form.createDate" type="date"
+									name="createDate" required> <span class="text-danger"
+									ng-show="productForm.createDate.$dirty && productForm.createDate.$error.required"></span>
+							</div>
+
+							<div class="form-group col-md-12">
+								<label class="control-label">Ảnh sản phẩm</label>
+								<div style="margin-bottom: 10px;">
+									<!-- Hiển thị trước ảnh đã chọn -->
+									<div class="image-preview-container" ng-show="!imageURL">
+										<img class="image-preview border border-5">
+									</div>
+									<div class="image-preview-container" ng-show="imageURL">
+										<img ng-src="{{ imageURL }}"
+											class="image-preview border border-5">
+									</div>
+								</div>
+								<div>
+									<!-- Input để chọn ảnh -->
+									<div class="input-file-container">
+										<input type="file" id="anh"
+											class="form-control w-50 input-file"
+											onchange="angular.element(this).scope().imageChanged(this.files)"
+											required /> <label for="anh" class="input-file-trigger"><i
+											class="fas fa-upload"></i> Chọn ảnh</label> <span class="text-danger"
+											ng-show="!imageURL">Ảnh sản phẩm là bắt buộc.</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group col-md-12">
+								<label class="control-label">Mô tả sản phẩm</label>
+								<textarea class="form-control" ng-model="form.mota" name="mota"
+									id="mota" required></textarea>
+								<script>
+									CKEDITOR.replace('mota');
+								</script>
+								<span class="text-danger" ng-show="!form.mota"></span>
+							</div>
+
+							<button ng-click="create()" class="btn btn-save" type="button"
+								ng-disabled="productForm.$invalid">Lưu lại</button>
+							<a class="btn btn-cancel" th:href="@{/dataProduct}">Hủy bỏ</a>
+						</form>
+
+
+
+					</div>
+				</div>
+			</div>
+	</main>
+	<script type="text/javascript">
+		//Thời Gian
+		function time() {
+			var today = new Date();
+			var weekday = new Array(7);
+			weekday[0] = "Chủ Nhật";
+			weekday[1] = "Thứ Hai";
+			weekday[2] = "Thứ Ba";
+			weekday[3] = "Thứ Tư";
+			weekday[4] = "Thứ Năm";
+			weekday[5] = "Thứ Sáu";
+			weekday[6] = "Thứ Bảy";
+			var day = weekday[today.getDay()];
+			var dd = today.getDate();
+			var mm = today.getMonth() + 1;
+			var yyyy = today.getFullYear();
+			var h = today.getHours();
+			var m = today.getMinutes();
+			var s = today.getSeconds();
+			m = checkTime(m);
+			s = checkTime(s);
+			nowTime = h + " giờ " + m + " phút " + s + " giây";
+			if (dd < 10) {
+				dd = '0' + dd
+			}
+			if (mm < 10) {
+				mm = '0' + mm
+			}
+			today = day + ', ' + dd + '/' + mm + '/' + yyyy;
+			tmp = '<span class="date"> ' + today + ' - ' + nowTime + '</span>';
+			document.getElementById("clock").innerHTML = tmp;
+			clocktime = setTimeout("time()", "1000", "Javascript");
+
+			function checkTime(i) {
+				if (i < 10) {
+					i = "0" + i;
+				}
+				return i;
+			}
+		}
+	</script>
+	<script th:src="@{/admin/doc/js/jquery-3.2.1.min.js}"></script>
+	<script th:src="@{/admin/doc/js/popper.min.js}"></script>
+	<script th:src="@{/admin/doc/js/bootstrap.min.js}"></script>
+	<script th:src="@{/admin/doc/js/main.js}"></script>
+	<script th:src="@{/admin/doc/js/plugins/pace.min.js}"></script>
+	<script th:src="@{/admin/js/sanpham.js}"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+		crossorigin="anonymous"></script>
+</body>
+
+</html>
